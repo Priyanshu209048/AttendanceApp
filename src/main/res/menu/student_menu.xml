@@ -9,4 +9,8 @@
         android:id="@+id/show_Calender"
         android:title="CHANGE DATE"/>
 
+    <item
+        android:id="@+id/show_attendance_sheet"
+        android:title="ATTENDANCE SHEET"/>
+
 </menu>

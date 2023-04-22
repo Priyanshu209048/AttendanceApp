@@ -73,7 +73,7 @@ public class MyDialog extends DialogFragment {
         add.setText("Update");
 
         roll_edt.setText(roll + "");     /*If we doesn't use the String.valueOf the it gives an error*/
-        roll_edt.setEnabled(false);
+        //roll_edt.setEnabled(false);
         name_edt.setText(name);
 
         roll_edt.setHint("Roll");
@@ -144,6 +144,7 @@ public class MyDialog extends DialogFragment {
             String name = name_edt.getText().toString();
 
             roll_edt.setText(String.valueOf(Integer.parseInt(roll)+1));     /*If we doesn't use the String.valueOf the it gives an error*/
+            //roll_edt.setText("");
             name_edt.setText("");
 
             listener.onClick(roll, name);

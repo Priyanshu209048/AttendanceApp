@@ -36,6 +36,7 @@ public class StudentActivity extends AppCompatActivity {
     private MyCalender calender;
     private TextView title;
     private TextView subtitle;
+    ArrayList<ClassItem> classItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,10 @@ public class StudentActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(position -> changeStatus(position));
+        /*Intent intent1 = new Intent(this, SheetListActivity.class);
+        intent1.putExtra("className", classItems.get(position).getClassName());
+        intent1.putExtra("subjectName", classItems.get(position).getSubjectName());
+        startActivity(intent1);*/
 
         loadStatusData();
     }
@@ -120,7 +125,7 @@ public class StudentActivity extends AppCompatActivity {
             else if (!status.equals("A"))
                 status = "P";
 
-            long value = dbHelper.addStatus(studentItem.getSid(), calender.getDate(), status);
+            long value = dbHelper.addStatus(studentItem.getSid(), cid, calender.getDate(), status);
 
             if (value == -1)
                 dbHelper.updateStatus(studentItem.getSid(), calender.getDate(), status);
@@ -143,8 +148,37 @@ public class StudentActivity extends AppCompatActivity {
             showAddStudentDialog();
         } else if (menuItem.getItemId() == R.id.show_Calender){
             showCalendar();
+        } else if (menuItem.getItemId() == R.id.show_attendance_sheet){
+            openSheetList();
         }
         return true;
+    }
+
+    private void openSheetList() {
+        long[] idArray = new long[studentItems.size()];
+        int[] rollArray = new int[studentItems.size()];
+        String[] nameArray = new String[studentItems.size()];
+
+        for (int i = 0; i < idArray.length; i++){
+            idArray[i] = studentItems.get(i).getSid();
+        }
+
+        for (int i = 0; i < rollArray.length; i++){
+            rollArray[i] = studentItems.get(i).getRoll();
+        }
+
+        for (int i = 0; i < nameArray.length; i++){
+            nameArray[i] = studentItems.get(i).getName();
+        }
+
+        Intent intent = new Intent(this, SheetListActivity.class);
+        intent.putExtra("cid", cid);
+        intent.putExtra("idArray", idArray);
+        intent.putExtra("rollArray", rollArray);
+        intent.putExtra("nameArray", nameArray);
+        intent.putExtra("className", className);
+        intent.putExtra("subjectName", subjectName);
+        startActivity(intent);
     }
 
     private void showCalendar() {
@@ -186,13 +220,13 @@ public class StudentActivity extends AppCompatActivity {
     private void showUpdateStudentDialog(int position) {
         MyDialog myDialog = new MyDialog(studentItems.get(position).getRoll(), studentItems.get(position).getName());
         myDialog.show(getSupportFragmentManager(), MyDialog.STUDENT_UPDATE_DIALOG);
-        myDialog.setListener((roll_string, name) -> updateStudent(position, name));
+        myDialog.setListener((roll, name) -> updateStudent(position, Integer.parseInt(roll), name));
     }
 
-    private void updateStudent(int position, String name) {
+    private void updateStudent(int position, int roll, String name) {
         /*int roll = Integer.parseInt(roll_string);*/
-        dbHelper.updateStudent(studentItems.get(position).getSid(), name);
-        //studentItems.get(position).setRoll(roll);
+        dbHelper.updateStudent(studentItems.get(position).getSid(), roll, name);
+        studentItems.get(position).setRoll(roll);
         studentItems.get(position).setName(name);
         adapter.notifyItemChanged(position);
     }

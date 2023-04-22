@@ -16,8 +16,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="36dp">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -29,7 +28,7 @@
                 android:id="@+id/roll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="01"
+                android:text="111111"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
@@ -37,8 +36,8 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:text="Priyanshu Baral"
+                android:layout_marginStart="95dp"
+                android:text="Priyanshu Kumar Baral     "
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
@@ -47,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="36dp"
+                android:layout_marginRight="20dp"
                 android:text="P"
                 android:textColor="#000000"
                 android:textSize="20sp"

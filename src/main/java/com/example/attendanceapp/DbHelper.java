@@ -49,17 +49,19 @@ public class DbHelper extends SQLiteOpenHelper {
     //Status Table
     private static final String STATUS_TABLE_NAME = "STATUS_TABLE";
     private static final String STATUS_ID = "_STATUS_ID";
-    private static final String DATE_KEY = "STATUS_NAME";
+    public static final String DATE_KEY = "STATUS_NAME";
     private static final String STATUS_KEY = "STATUS";
 
     private static final String CREATE_STATUS_TABLE =
             "CREATE TABLE " + STATUS_TABLE_NAME + "(" +
                     STATUS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     S_ID + " INTEGER NOT NULL," +
+                    C_ID + " INTEGER NOT NULL," +
                     DATE_KEY + " DATE NOT NULL," +
                     STATUS_KEY + " TEXT NOT NULL," +
                     "UNIQUE (" + S_ID + "," + DATE_KEY + ")," +
-                    " FOREIGN KEY ( " +S_ID+ ") REFERENCES " + STUDENT_TABLE_NAME + "(" + S_ID + ")" +
+                    " FOREIGN KEY ( " +S_ID+ ") REFERENCES " + STUDENT_TABLE_NAME + "(" + S_ID + ")," +
+                    " FOREIGN KEY ( " +C_ID+ ") REFERENCES " + CLASS_TABLE_NAME + "(" + C_ID + ")" +
                     ");";
     private static final String DROP_STATUS_TABLE = "DROP TABLE IF EXISTS " + STATUS_TABLE_NAME;
     private static final String SELECT_STATUS_TABLE = "SELECT * FROM " + STATUS_TABLE_NAME;
@@ -137,18 +139,20 @@ public class DbHelper extends SQLiteOpenHelper {
         return database.delete(STUDENT_TABLE_NAME, S_ID + "=?", new String[]{String.valueOf(sid)});
     }
 
-    long updateStudent(long sid, String name){
+    long updateStudent(long sid, int roll, String name){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(STUDENT_ROLL_KEY, roll);
         values.put(STUDENT_NAME_KEY, name);
 
         return database.update(STUDENT_TABLE_NAME, values, S_ID + "=?", new String[]{String.valueOf(sid)});
     }
 
-    long addStatus(long sid, String date, String status){
+    long addStatus(long sid, long cid, String date, String status){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(S_ID, sid);
+        values.put(C_ID, cid);
         values.put(DATE_KEY, date);
         values.put(STATUS_KEY, status);
 
@@ -174,6 +178,11 @@ public class DbHelper extends SQLiteOpenHelper {
             status = cursor.getString(cursor.getColumnIndexOrThrow(STATUS_KEY));
         }
         return status;
+    }
+
+    Cursor getDistinctMonths(long cid){
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(STATUS_TABLE_NAME, new String[]{DATE_KEY}, C_ID + "=" +cid, null, "substr("+DATE_KEY+",4, 7)", null, null);  //21.04.2023
     }
 
 }

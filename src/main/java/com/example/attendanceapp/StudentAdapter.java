@@ -78,8 +78,9 @@ class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHold
             return Color.parseColor("#" + Integer.toHexString(ContextCompat.getColor(context, R.color.present)));
         else if (status.equals("A"))
             return Color.parseColor("#" + Integer.toHexString(ContextCompat.getColor(context, R.color.absent)));
-
-        return Color.parseColor("#" + Integer.toHexString(ContextCompat.getColor(context, R.color.white)));
+        else
+            return Color.parseColor("#" + Integer.toHexString(ContextCompat.getColor(context, R.color.white)));
+        /*return Color.parseColor("#" + Integer.toHexString(ContextCompat.getColor(context, R.color.white)));*/
     }
 
     @Override
